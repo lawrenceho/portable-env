@@ -68,9 +68,6 @@ groupadd -g 2375 -r docker
 mkdir /certs /certs/client
 chmod 1777 /certs /certs/client
 
-# Enable sudo for wheel group
-printf '%%wheel ALL=(ALL) NOPASSWD:ALL\n' >>/etc/sudoers
-
 # Create user
 useradd -M -G wheel,docker "${USER}"
 mkdir /home/"${USER}"
