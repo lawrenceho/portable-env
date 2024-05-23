@@ -5,7 +5,7 @@ set -eu
 /usr/sbin/sshd -D -e &
 
 # dnsmasq
-/usr/local/bin/dnsmasq-entrypoint.sh &
+"$(dirname "$0")"/dnsmasq-entrypoint.sh &
 
 # Docker
-exec /usr/local/bin/dockerd-entrypoint.sh "$@"
+exec "$(dirname "$0")"/dockerd-entrypoint.sh "$@"

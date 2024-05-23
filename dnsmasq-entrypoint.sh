@@ -1,6 +1,10 @@
 #!/bin/sh
 set -eu
 
+# https://github.com/koalaman/shellcheck/issues/2555
+# shellcheck disable=SC3040
+(set -o pipefail 2> /dev/null) && set -o pipefail
+
 # Wait until docker0 becomes available
 while ! ip -o -4 addr show docker0 >/dev/null 2>&1; do
   printf 'dnsmasq-entrypoint.sh: Waiting for docker0...\n'
