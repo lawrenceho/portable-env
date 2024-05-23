@@ -41,6 +41,7 @@ dnf -y install \
   java-17-openjdk-src \
   keychain \
   kmod \
+  libicu \
   make \
   man-db \
   man-pages \
