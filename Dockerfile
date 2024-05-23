@@ -1,6 +1,4 @@
-# Prefer latest release image
-# hadolint ignore=DL3007
-FROM fedora:latest
+FROM fedora:40
 
 ARG USER
 
