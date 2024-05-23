@@ -69,7 +69,7 @@ mkdir /certs /certs/client
 chmod 1777 /certs /certs/client
 
 # Create user
-useradd -M -G wheel,docker "${USER}"
+useradd -M -G docker "${USER}"
 mkdir /home/"${USER}"
 chown "${USER}":"${USER}" /home/"${USER}"
 
