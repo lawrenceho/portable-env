@@ -1,0 +1,20 @@
+services:
+  vm:
+    build:
+      context: .
+      args:
+        - USER=${USER:-${USERNAME:-fedora}}
+    ports:
+      - "127.0.0.1:2222:22"
+    privileged: true
+    restart: always
+    volumes:
+      - portable-env-home:/home/${USER:-${USERNAME:-fedora}}
+      - portable-env-docker:/var/lib/docker
+    working_dir: /home/${USER:-${USERNAME:-fedora}}
+
+volumes:
+  portable-env-home:
+    external: true
+  portable-env-docker:
+    external: true
