@@ -1,0 +1,5 @@
+# Automatically detect text files and convert line endings
+* text=auto
+
+# Always use LF line endings for shell scripts
+*.sh text eol=lf diff=bash
