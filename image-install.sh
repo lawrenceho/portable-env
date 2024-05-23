@@ -52,8 +52,7 @@ dnf -y install \
   procps \
   ripgrep \
   tmux \
-  unzip \
-  which
+  unzip
 
 # SSH
 # /var/run/utmp is touched as it is not in the image
