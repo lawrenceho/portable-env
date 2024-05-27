@@ -4,6 +4,7 @@ services:
       context: .
       args:
         - USER=${USER:-${USERNAME:-fedora}}
+    hostname: vm
     ports:
       - "127.0.0.1:2222:22"
     privileged: true
