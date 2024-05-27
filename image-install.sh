@@ -32,6 +32,7 @@ dnf -y install \
   bash-completion \
   dnsmasq \
   file \
+  fuse \
   gcc \
   git \
   hostname \
@@ -50,7 +51,10 @@ dnf -y install \
   openssh-clients \
   openssh-server \
   openssl \
+  pass \
+  pinentry \
   procps \
+  restic \
   ripgrep \
   tmux \
   unzip
