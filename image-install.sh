@@ -31,8 +31,10 @@ dnf -y upgrade
 dnf -y install \
   bash-completion \
   dnsmasq \
+  fd-find \
   file \
   fuse \
+  fzf \
   gcc \
   git \
   hostname \
