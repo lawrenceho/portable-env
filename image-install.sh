@@ -75,7 +75,12 @@ mkdir /certs /certs/client
 chmod 1777 /certs /certs/client
 
 # Lazygit
-curl -sSL https://github.com/jesseduffield/lazygit/releases/download/v0.42.0/lazygit_0.42.0_Linux_arm64.tar.gz |
+ARCH=$(uname -m)
+case $ARCH in
+  aarch64) ARCH="arm64" ;;
+  x86_64) ARCH="x86_64" ;;
+esac
+curl -sSL "https://github.com/jesseduffield/lazygit/releases/download/v0.42.0/lazygit_0.42.0_Linux_${ARCH}.tar.gz" |
   tar -zxC /usr/local/bin lazygit
 
 # Create user
