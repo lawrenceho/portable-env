@@ -74,6 +74,10 @@ groupadd -g 2375 -r docker
 mkdir /certs /certs/client
 chmod 1777 /certs /certs/client
 
+# Lazygit
+curl -sSL https://github.com/jesseduffield/lazygit/releases/download/v0.42.0/lazygit_0.42.0_Linux_arm64.tar.gz |
+  tar -zxC /usr/local/bin lazygit
+
 # Create user
 useradd -M -G docker "${USER}"
 mkdir /home/"${USER}"
