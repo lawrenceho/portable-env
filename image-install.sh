@@ -75,12 +75,13 @@ mkdir /certs /certs/client
 chmod 1777 /certs /certs/client
 
 # Lazygit
-ARCH=$(uname -m)
-case $ARCH in
+LAZYGIT_VERSION=$(curl -sSLw '%{url_effective}' -o /dev/null https://github.com/jesseduffield/lazygit/releases/latest | awk -F / '{print $NF}')
+LAZYGIT_SHORT_VERSION="$(printf '%s' "$LAZYGIT_VERSION" | grep -o '[^v]*')"
+case $(uname -m) in
   aarch64) ARCH="arm64" ;;
   x86_64) ARCH="x86_64" ;;
 esac
-curl -sSL "https://github.com/jesseduffield/lazygit/releases/download/v0.42.0/lazygit_0.42.0_Linux_${ARCH}.tar.gz" |
+curl -sSL https://github.com/jesseduffield/lazygit/releases/download/"$LAZYGIT_VERSION"/lazygit_"$LAZYGIT_SHORT_VERSION"_Linux_"$ARCH".tar.gz |
   tar -zxC /usr/local/bin lazygit
 
 # Create user
