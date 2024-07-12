@@ -82,7 +82,7 @@ case $(uname -m) in
   x86_64) ARCH="x86_64" ;;
 esac
 curl -sSL https://github.com/jesseduffield/lazygit/releases/download/"$LAZYGIT_VERSION"/lazygit_"$LAZYGIT_SHORT_VERSION"_Linux_"$ARCH".tar.gz |
-  tar -zxC /usr/local/bin lazygit
+  tar --no-same-owner --no-same-permissions -zxC /usr/local/bin lazygit
 
 # Create user
 useradd -M -G docker "${USER}"
