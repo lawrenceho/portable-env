@@ -29,7 +29,9 @@ dnf -y upgrade
 # dnsmasq is installed to provide name resolution service for containers
 # using the default bridge network
 dnf -y install \
+  automake \
   bash-completion \
+  byacc \
   dnsmasq \
   fd-find \
   file \
@@ -44,10 +46,12 @@ dnf -y install \
   java-17-openjdk-src \
   keychain \
   kmod \
+  libevent-devel \
   libicu \
   make \
   man-db \
   man-pages \
+  ncurses-devel \
   neovim \
   npm \
   openssh-clients \
@@ -58,7 +62,6 @@ dnf -y install \
   procps \
   restic \
   ripgrep \
-  tmux \
   unzip
 
 # SSH
@@ -83,6 +86,18 @@ case $(uname -m) in
 esac
 curl -sSL https://github.com/jesseduffield/lazygit/releases/download/"$LAZYGIT_VERSION"/lazygit_"$LAZYGIT_SHORT_VERSION"_Linux_"$ARCH".tar.gz |
   tar --no-same-owner --no-same-permissions -zxC /usr/local/bin lazygit
+
+# tmux
+# https://github.com/tmux/tmux/issues/3864
+# Search is fixed but not yet released
+# Build requirements: automake byacc libevent-devel ncurses-devel
+cd /tmp
+git clone https://github.com/tmux/tmux.git
+cd /tmp/tmux
+git switch --detach 963e824f5f302894fe30e9ba4e4803d1008fe04e
+sh autogen.sh
+./configure --enable-sixel
+make && make install
 
 # Create user
 useradd -M -G docker "${USER}"
