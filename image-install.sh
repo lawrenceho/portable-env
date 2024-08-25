@@ -31,7 +31,7 @@ dnf -y upgrade
 dnf -y install \
   automake \
   bash-completion \
-  byacc \
+  bison \
   dnsmasq \
   fd-find \
   file \
@@ -47,7 +47,6 @@ dnf -y install \
   keychain \
   kmod \
   libevent-devel \
-  libicu \
   make \
   man-db \
   man-pages \
@@ -90,7 +89,7 @@ curl -sSL https://github.com/jesseduffield/lazygit/releases/download/"$LAZYGIT_V
 # tmux
 # https://github.com/tmux/tmux/issues/3864
 # Search is fixed but not yet released
-# Build requirements: automake byacc libevent-devel ncurses-devel
+# Build requirements: automake bison libevent-devel ncurses-devel
 cd /tmp
 git clone https://github.com/tmux/tmux.git
 cd /tmp/tmux
