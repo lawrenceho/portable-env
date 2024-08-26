@@ -28,6 +28,8 @@ dnf -y upgrade
 
 # dnsmasq is installed to provide name resolution service for containers
 # using the default bridge network
+# libicu is required for Marksman (but not used)
+# https://github.com/artempyanykh/marksman/issues/209
 dnf -y install \
   automake \
   bash-completion \
@@ -47,6 +49,7 @@ dnf -y install \
   keychain \
   kmod \
   libevent-devel \
+  libicu \
   make \
   man-db \
   man-pages \
