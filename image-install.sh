@@ -17,19 +17,20 @@ sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
 # Disable installation of weak dependencies
 printf 'install_weak_deps=False\n' >>/etc/dnf/dnf.conf
 
+# Upgrade all installed packages
+dnf -y upgrade
+
 # Enable installation of documentation and reinstall all installed packages
 sed -i 's/tsflags/#tsflags/' /etc/dnf/dnf.conf
 # Word splitting is required
 # shellcheck disable=SC2046
 dnf -y reinstall $(dnf list --installed | tail -n +2 | awk -F '.' '{print $1}')
 
-# Upgrade all installed packages
-dnf -y upgrade
-
 # dnsmasq is installed to provide name resolution service for containers
 # using the default bridge network
 # libicu is required for Marksman (but not used)
 # https://github.com/artempyanykh/marksman/issues/209
+# python3 is required for mason jdtls
 dnf -y install \
   bash-completion \
   dnsmasq \
@@ -58,6 +59,7 @@ dnf -y install \
   pass \
   pinentry \
   procps \
+  python3 \
   restic \
   ripgrep \
   tmux \
