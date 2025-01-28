@@ -43,8 +43,8 @@ dnf -y install \
   hostname \
   iproute \
   iptables-nft \
-  java-17-openjdk-devel \
-  java-17-openjdk-src \
+  java-21-openjdk-devel \
+  java-21-openjdk-src \
   keychain \
   kmod \
   libicu \
