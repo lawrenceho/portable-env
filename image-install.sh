@@ -26,6 +26,10 @@ sed -i 's/tsflags/#tsflags/' /etc/dnf/dnf.conf
 # shellcheck disable=SC2046
 dnf -y reinstall $(dnf list --installed | tail -n +2 | awk -F '.' '{print $1}')
 
+# Install and enable adoptium temurin java repository
+dnf -y install adoptium-temurin-java-repository
+sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/adoptium-temurin-java-repository.repo
+
 # dnsmasq is installed to provide name resolution service for containers
 # using the default bridge network
 # libicu is required for Marksman (but not used)
@@ -43,8 +47,6 @@ dnf -y install \
   hostname \
   iproute \
   iptables-nft \
-  java-21-openjdk-devel \
-  java-21-openjdk-src \
   keychain \
   kmod \
   libicu \
@@ -62,6 +64,7 @@ dnf -y install \
   python3 \
   restic \
   ripgrep \
+  temurin-21-jdk \
   tmux \
   unzip
 
