@@ -12,7 +12,7 @@ while ! ip -o -4 addr show docker0 >/dev/null 2>&1; do
 done
 
 # Get docker0 IP address
-DOCKER0_IP="$(ip -o -4 addr show docker0 | awk -F ' +|/' '{print $4}')"
+DOCKER0_IP="$(ip -o -4 addr show docker0 | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1)"
 
 # Add nameserver entry to be picked up by containers
 printf 'nameserver %s\n' "$DOCKER0_IP" >>/etc/resolv.conf

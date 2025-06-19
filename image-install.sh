@@ -24,7 +24,7 @@ dnf -y upgrade
 sed -i 's/tsflags/#tsflags/' /etc/dnf/dnf.conf
 # Word splitting is required
 # shellcheck disable=SC2046
-dnf -y reinstall $(dnf list --installed | tail -n +2 | awk -F '.' '{print $1}')
+dnf -y reinstall $(dnf list --installed | tail -n +2 | cut -d '.' -f 1)
 
 # Install and enable adoptium temurin java repository
 dnf -y install adoptium-temurin-java-repository
@@ -42,6 +42,7 @@ dnf -y install \
   file \
   fuse \
   fzf \
+  gawk \
   gcc \
   git \
   hostname \
@@ -82,7 +83,8 @@ mkdir /certs /certs/client
 chmod 1777 /certs /certs/client
 
 # Lazygit
-LAZYGIT_VERSION=$(curl -sSLw '%{url_effective}' -o /dev/null https://github.com/jesseduffield/lazygit/releases/latest | awk -F / '{print $NF}')
+LAZYGIT_URL="$(curl -sSLw '%{url_effective}' -o /dev/null https://github.com/jesseduffield/lazygit/releases/latest)"
+LAZYGIT_VERSION="${LAZYGIT_URL##*/}"
 LAZYGIT_SHORT_VERSION="$(printf '%s' "$LAZYGIT_VERSION" | grep -o '[^v]*')"
 case $(uname -m) in
   aarch64) ARCH="arm64" ;;
