@@ -66,6 +66,7 @@ dnf -y install \
   restic \
   ripgrep \
   temurin-21-jdk \
+  tree-sitter-cli \
   tmux \
   unzip
 
