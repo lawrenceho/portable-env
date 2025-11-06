@@ -5,11 +5,6 @@ set -eu
 # shellcheck disable=SC3040
 (set -o pipefail 2>/dev/null) && set -o pipefail
 
-# Wait until docker0 becomes available
-while ! ip -o -4 addr show docker0 >/dev/null 2>&1; do
-  sleep 1
-done
-
 # Get docker0 IP address
 DOCKER0_IP="$(ip -o -4 addr show docker0 | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1)"
 

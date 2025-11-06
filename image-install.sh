@@ -81,19 +81,16 @@ systemctl disable getty@tty1
 # SSH
 systemctl enable sshd
 
-# dnsmasq
-mkdir -p /etc/systemd/system/dnsmasq.service.d
-printf '[Unit]\nAfter=docker.service\nWants=docker.service\n[Service]\nExecStartPre=/usr/local/bin/dnsmasq-execstartpre.sh\nExecStartPost=/usr/local/bin/dnsmasq-execstartpost.sh\n' \
-  >>/etc/systemd/system/dnsmasq.service.d/dnsmasq.conf
-systemctl enable dnsmasq
-
 # Docker
-mkdir -p /etc/systemd/system/docker.service.d
-printf '[Service]\nExecStartPre=/bin/sleep 5\n' \
-  >>/etc/systemd/system/docker.service.d/docker.conf
 systemctl enable docker
 curl -sSo /etc/bash_completion.d/docker.sh \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker
+
+# dnsmasq
+mkdir -p /etc/systemd/system/dnsmasq.service.d
+printf '[Unit]\nBefore=\nAfter=docker.service\nWants=docker.service\n[Service]\nExecStartPre=/usr/local/bin/dnsmasq-execstartpre.sh\nExecStartPost=/usr/local/bin/dnsmasq-execstartpost.sh\n' \
+  >>/etc/systemd/system/dnsmasq.service.d/dnsmasq.conf
+systemctl enable dnsmasq
 
 # TigerVNC
 printf ":0=${USER}\n" >>/etc/tigervnc/vncserver.users
@@ -119,6 +116,9 @@ systemctl disable NetworkManager
 systemctl mask accounts-daemon
 systemctl mask gssproxy
 systemctl mask polkit
+systemctl mask systemd-udevd-control.socket
+systemctl mask systemd-udevd-kernel.socket
+systemctl mask systemd-udevd
 
 # Create user
 useradd -M -G docker "${USER}"
