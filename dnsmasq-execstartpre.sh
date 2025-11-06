@@ -7,15 +7,11 @@ set -eu
 
 # Wait until docker0 becomes available
 while ! ip -o -4 addr show docker0 >/dev/null 2>&1; do
-  printf 'dnsmasq-entrypoint.sh: Waiting for docker0...\n'
   sleep 1
 done
 
 # Get docker0 IP address
 DOCKER0_IP="$(ip -o -4 addr show docker0 | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1)"
 
-# Add nameserver entry to be picked up by containers
-printf 'nameserver %s\n' "$DOCKER0_IP" >>/etc/resolv.conf
-
-# Run dnsmasq
-exec /usr/sbin/dnsmasq -k -a "$DOCKER0_IP" -R -S 127.0.0.11
+# Add listen-address dnsmasq config entry
+printf 'listen-address=%s # added by dnsmasq-execstartpre.sh\n' "$DOCKER0_IP" >>/etc/dnsmasq.conf

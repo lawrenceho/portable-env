@@ -26,9 +26,11 @@ sed -i 's/tsflags/#tsflags/' /etc/dnf/dnf.conf
 # shellcheck disable=SC2046
 dnf -y reinstall $(dnf list --installed | tail -n +2 | cut -d '.' -f 1)
 
-# Install and enable adoptium temurin java repository
-dnf -y install adoptium-temurin-java-repository
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/adoptium-temurin-java-repository.repo
+# Enable docker repository
+dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
+
+# Enable copr for mise
+dnf -y copr enable jdxcode/mise
 
 # dnsmasq is installed to provide name resolution service for containers
 # using the default bridge network
@@ -37,25 +39,26 @@ sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/adoptium-temurin-java-repositor
 # python3 is required for mason jdtls
 dnf -y install \
   bash-completion \
+  containerd.io \
   dnsmasq \
+  docker-buildx-plugin \
+  docker-ce \
+  docker-ce-cli \
+  docker-compose-plugin \
   fd-find \
   file \
-  fuse \
   fzf \
-  gawk \
   gcc \
   git \
   hostname \
   iproute \
-  iptables-nft \
-  keychain \
-  kmod \
   libicu \
   make \
   man-db \
   man-pages \
+  mise \
   neovim \
-  npm \
+  novnc \
   openssh-clients \
   openssh-server \
   openssl \
@@ -65,34 +68,57 @@ dnf -y install \
   python3 \
   restic \
   ripgrep \
-  temurin-21-jdk \
+  systemd \
+  tigervnc-server \
   tree-sitter-cli \
   tmux \
-  unzip
+  unzip \
+  @xfce-desktop-environment
+
+# Disable getty
+systemctl disable getty@tty1
 
 # SSH
-# /var/run/utmp is touched as it is not in the image
-# sshd would print an error message related to logout if utmp is missing
-touch /var/run/utmp
-ssh-keygen -A
+systemctl enable sshd
+
+# dnsmasq
+mkdir -p /etc/systemd/system/dnsmasq.service.d
+printf '[Unit]\nAfter=docker.service\nWants=docker.service\n[Service]\nExecStartPre=/usr/local/bin/dnsmasq-execstartpre.sh\nExecStartPost=/usr/local/bin/dnsmasq-execstartpost.sh\n' \
+  >>/etc/systemd/system/dnsmasq.service.d/dnsmasq.conf
+systemctl enable dnsmasq
 
 # Docker
+mkdir -p /etc/systemd/system/docker.service.d
+printf '[Service]\nExecStartPre=/bin/sleep 5\n' \
+  >>/etc/systemd/system/docker.service.d/docker.conf
+systemctl enable docker
 curl -sSo /etc/bash_completion.d/docker.sh \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker
-groupadd -g 2375 -r docker
-mkdir /certs /certs/client
-chmod 1777 /certs /certs/client
 
-# Lazygit
-LAZYGIT_URL="$(curl -sSLw '%{url_effective}' -o /dev/null https://github.com/jesseduffield/lazygit/releases/latest)"
-LAZYGIT_VERSION="${LAZYGIT_URL##*/}"
-LAZYGIT_SHORT_VERSION="$(printf '%s' "$LAZYGIT_VERSION" | grep -o '[^v]*')"
-case $(uname -m) in
-  aarch64) ARCH="arm64" ;;
-  x86_64) ARCH="x86_64" ;;
-esac
-curl -sSL https://github.com/jesseduffield/lazygit/releases/download/"$LAZYGIT_VERSION"/lazygit_"$LAZYGIT_SHORT_VERSION"_Linux_"$ARCH".tar.gz |
-  tar --no-same-owner --no-same-permissions -zxC /usr/local/bin lazygit
+# TigerVNC
+printf ":0=${USER}\n" >>/etc/tigervnc/vncserver.users
+printf 'session=xfce\nsecuritytypes=none\n' >>/etc/tigervnc/vncserver-config-defaults
+systemctl enable vncserver@:0
+
+# Disable unused services
+systemctl disable abrtd
+systemctl disable atd
+systemctl disable avahi-daemon
+systemctl disable avahi-daemon.socket
+systemctl disable chronyd
+systemctl disable crond
+systemctl disable firewalld
+systemctl disable lightdm
+systemctl disable rsyslog
+systemctl disable rtkit-daemon
+systemctl disable systemd-resolved
+systemctl disable systemd-userdbd.socket
+systemctl disable upower
+systemctl disable udisks2
+systemctl disable NetworkManager
+systemctl mask accounts-daemon
+systemctl mask gssproxy
+systemctl mask polkit
 
 # Create user
 useradd -M -G docker "${USER}"

@@ -12,6 +12,8 @@ services:
     volumes:
       - portable-env-home:/home/${USER:-${USERNAME:-fedora}}
       - portable-env-docker:/var/lib/docker
+      - type: tmpfs
+        target: /run
     working_dir: /home/${USER:-${USERNAME:-fedora}}
 
 volumes:
