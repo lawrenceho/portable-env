@@ -12,7 +12,9 @@ DIR="$(dirname "$0")"
 "$DIR"/image-preinstall.sh
 
 # Disable unused repository
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
+sed -i 's/enabled=1/enabled=0/' \
+  /etc/yum.repos.d/fedora-cisco-openh264.repo \
+  /etc/yum.repos.d/fedora-updates-testing.repo
 
 # Disable installation of weak dependencies
 printf 'install_weak_deps=False\n' >>/etc/dnf/dnf.conf
@@ -63,6 +65,7 @@ dnf -y install \
   mise \
   neovim \
   nodejs-full-i18n \
+  nodejs-npm \
   novnc \
   openssh-clients \
   openssh-server \
