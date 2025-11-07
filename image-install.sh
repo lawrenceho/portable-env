@@ -29,6 +29,10 @@ dnf -y reinstall $(dnf list --installed | tail -n +2 | cut -d '.' -f 1)
 # Enable docker repository
 dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
 
+# Install and enable adoptium temurin java repository
+dnf -y install adoptium-temurin-java-repository
+sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/adoptium-temurin-java-repository.repo
+
 # Enable copr for mise
 dnf -y copr enable jdxcode/mise
 
@@ -58,6 +62,7 @@ dnf -y install \
   man-pages \
   mise \
   neovim \
+  nodejs-full-i18n \
   novnc \
   openssh-clients \
   openssh-server \
@@ -69,6 +74,7 @@ dnf -y install \
   restic \
   ripgrep \
   systemd \
+  temurin-21-jdk \
   tigervnc-server \
   tree-sitter-cli \
   tmux \
