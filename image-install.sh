@@ -92,6 +92,7 @@ systemctl enable sshd
 
 # Docker
 systemctl enable docker
+mkdir -p /etc/docker && printf '{"storage-driver": "overlay2"}\n' >>/etc/docker/daemon.json
 curl -sSo /etc/bash_completion.d/docker.sh \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker
 
