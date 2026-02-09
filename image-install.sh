@@ -55,9 +55,11 @@ dnf -y install \
   file \
   fzf \
   gcc \
+  gh \
   git \
   hostname \
   iproute \
+  jq \
   libicu \
   make \
   man-db \
