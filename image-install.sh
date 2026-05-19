@@ -84,6 +84,7 @@ dnf -y install \
   tree-sitter-cli \
   tmux \
   unzip \
+  uv \
   @xfce-desktop-environment
 
 # Disable getty
