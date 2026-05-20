@@ -78,6 +78,7 @@ dnf -y install \
   python3 \
   restic \
   ripgrep \
+  rustup \
   systemd \
   temurin-21-jdk \
   tigervnc-server \
