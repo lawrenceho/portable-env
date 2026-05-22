@@ -66,9 +66,6 @@ dnf -y install \
   man-pages \
   mise \
   neovim \
-  nodejs-full-i18n \
-  nodejs-npm \
-  novnc \
   openssh-clients \
   openssh-server \
   openssl \
@@ -79,14 +76,13 @@ dnf -y install \
   restic \
   ripgrep \
   rustup \
+  shellcheck \
   systemd \
   temurin-21-jdk \
-  tigervnc-server \
   tree-sitter-cli \
   tmux \
   unzip \
-  uv \
-  @xfce-desktop-environment
+  uv
 
 # Disable getty
 systemctl disable getty@tty1
@@ -106,11 +102,6 @@ printf '[Unit]\nBefore=\nAfter=docker.service\nWants=docker.service\n[Service]\n
   >>/etc/systemd/system/dnsmasq.service.d/dnsmasq.conf
 systemctl enable dnsmasq
 
-# TigerVNC
-printf ":0=${USER}\n" >>/etc/tigervnc/vncserver.users
-printf 'session=xfce\nsecuritytypes=none\n' >>/etc/tigervnc/vncserver-config-defaults
-systemctl enable vncserver@:0
-
 # Disable unused services
 systemctl disable abrtd
 systemctl disable atd
@@ -121,7 +112,6 @@ systemctl disable crond
 systemctl disable firewalld
 systemctl disable lightdm
 systemctl disable rsyslog
-systemctl disable rtkit-daemon
 systemctl disable systemd-resolved
 systemctl disable systemd-userdbd.socket
 systemctl disable upower
@@ -130,6 +120,7 @@ systemctl disable NetworkManager
 systemctl mask accounts-daemon
 systemctl mask gssproxy
 systemctl mask polkit
+systemctl mask rtkit-daemon
 systemctl mask systemd-udevd-control.socket
 systemctl mask systemd-udevd-kernel.socket
 systemctl mask systemd-udevd
