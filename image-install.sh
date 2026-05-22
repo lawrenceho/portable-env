@@ -45,7 +45,9 @@ dnf -y copr enable jdxcode/mise
 # python3 is required for mason jdtls
 dnf -y install \
   bash-completion \
+  bubblewrap \
   containerd.io \
+  dbus \
   dnsmasq \
   docker-buildx-plugin \
   docker-ce \
@@ -77,7 +79,9 @@ dnf -y install \
   ripgrep \
   rustup \
   shellcheck \
+  socat \
   systemd \
+  systemd-pam \
   temurin-21-jdk \
   tree-sitter-cli \
   tmux \
@@ -101,29 +105,6 @@ mkdir -p /etc/systemd/system/dnsmasq.service.d
 printf '[Unit]\nBefore=\nAfter=docker.service\nWants=docker.service\n[Service]\nExecStartPre=/usr/local/bin/dnsmasq-execstartpre.sh\nExecStartPost=/usr/local/bin/dnsmasq-execstartpost.sh\n' \
   >>/etc/systemd/system/dnsmasq.service.d/dnsmasq.conf
 systemctl enable dnsmasq
-
-# Disable unused services
-systemctl disable abrtd
-systemctl disable atd
-systemctl disable avahi-daemon
-systemctl disable avahi-daemon.socket
-systemctl disable chronyd
-systemctl disable crond
-systemctl disable firewalld
-systemctl disable lightdm
-systemctl disable rsyslog
-systemctl disable systemd-resolved
-systemctl disable systemd-userdbd.socket
-systemctl disable upower
-systemctl disable udisks2
-systemctl disable NetworkManager
-systemctl mask accounts-daemon
-systemctl mask gssproxy
-systemctl mask polkit
-systemctl mask rtkit-daemon
-systemctl mask systemd-udevd-control.socket
-systemctl mask systemd-udevd-kernel.socket
-systemctl mask systemd-udevd
 
 # Create user
 useradd -M -G docker "${USER}"
