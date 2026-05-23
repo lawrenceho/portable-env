@@ -79,6 +79,7 @@ dnf -y install \
   ripgrep \
   rustup \
   shellcheck \
+  shfmt \
   socat \
   systemd \
   systemd-pam \
