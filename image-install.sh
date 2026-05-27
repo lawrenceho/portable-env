@@ -101,6 +101,9 @@ mkdir -p /etc/docker && printf '{"storage-driver": "overlay2"}\n' >>/etc/docker/
 curl -sSo /etc/bash_completion.d/docker.sh \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker
 
+# Disbale reading /dev/kmsg
+printf '[Journal]\nReadKMsg=no\n' >> /etc/systemd/journald.conf
+
 # dnsmasq
 mkdir -p /etc/systemd/system/dnsmasq.service.d
 printf '[Unit]\nBefore=\nAfter=docker.service\nWants=docker.service\n[Service]\nExecStartPre=/usr/local/bin/dnsmasq-execstartpre.sh\nExecStartPost=/usr/local/bin/dnsmasq-execstartpost.sh\n' \
